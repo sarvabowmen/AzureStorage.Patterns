@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AzureStorage.Patterns
+namespace AzureStorage.Patterns.One
 {
     static class CloudConfigurationManager 
     {

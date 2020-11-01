@@ -6,8 +6,8 @@ namespace AzureStorage.Patterns.Models
     {
         public CustomerEntity(string id)
         {
-            PartitionKey = id;
-            RowKey = id.Substring(0);
+            PartitionKey = id.Substring(0);
+            RowKey = id;
         }
 
         public string Name { get; set; }

@@ -1,41 +1,41 @@
 ﻿using AzureStorage.Patterns.Models;
-using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AzureStorage.Patterns
 {
-    public class StoringSubObjectsAsColumns
+    public static class DataAccess
     {
-        public async Task<Customer> GetCustomer(string id)
+        public static async Task Delete(CloudTable table, CustomerEntity customerEntity)
         {
-            var table = await CreateTable("Customers");
+            TableOperation operation = TableOperation.Delete(customerEntity);
 
-            var result = await RetriveUsingRowAndPartitionKey(table, id, id.Substring(0));
+            TableResult result = await table.ExecuteAsync(operation);
 
-            var intrests = JsonSerializer.Deserialize<Interests>(result.Interests);
-            var groups = JsonSerializer.Deserialize<Groups>(result.Groups);
+            Console.WriteLine("\t{0} Deleted Successfully", customerEntity.RowKey);
 
-            var customerViewModel = new Customer
+        }
+
+        public static async Task<CustomerEntity> InsertOrMerge(CloudTable table, CustomerEntity customerEntity)
+        {
+            TableOperation operation = TableOperation.InsertOrMerge(customerEntity);
+
+            TableResult result = await table.ExecuteAsync(operation);
+
+            CustomerEntity customer = result.Result as CustomerEntity;
+            if (customer != null)
             {
-                Id = result.PartitionKey,
-                Name = result.Name,
-                Groups = groups,
-                Interests = intrests
-            };
-            return customerViewModel;
+                Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", customer.PartitionKey, customer.RowKey, customer.Groups, customer.Interests);
+            }
 
+            return customer;
         }
 
-        public Task<Customer> AddCustomer(string id)
-        {
-            return Task.FromResult<Customer>(new Customer());
-        }
-
-        private async Task<CustomerEntity> RetriveUsingRowAndPartitionKey(CloudTable table, string partitionKey, string rowKey)
+        public static async Task<CustomerEntity> RetriveUsingRowAndPartitionKey(CloudTable table, string partitionKey, string rowKey)
         {
             TableOperation operation = TableOperation.Retrieve<CustomerEntity>(partitionKey, rowKey);
 
@@ -50,7 +50,7 @@ namespace AzureStorage.Patterns
             return customer;
         }
 
-        private CloudStorageAccount CreateTableStorage(string connectionString)
+        private static CloudStorageAccount CreateTableStorage(string connectionString)
         {
             CloudStorageAccount cloudStorage;
             cloudStorage = CloudStorageAccount.Parse(connectionString);
@@ -58,10 +58,10 @@ namespace AzureStorage.Patterns
             return cloudStorage;
         }
 
-        private async Task<CloudTable> CreateTable(string tableName)
+        public static async Task<CloudTable> CreateTable(string tableName)
         {
 
-            string connectionString = CloudConfigurationManager.Config.GetConnectionString("StorageConnectionString");
+            string connectionString = CloudConfigurationManager.Config.GetConnectionString("TableStorageConnection");
 
             var cloudStorage = CreateTableStorage(connectionString);
             var tableClient = cloudStorage.CreateCloudTableClient();

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorage.Patterns", "AzureStorage.Patterns\AzureStorage.Patterns.csproj", "{16E1C482-D8DE-4271-ABCA-B02478E5DB5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureStorage.Patterns.One", "AzureStorage.Patterns\AzureStorage.Patterns.One.csproj", "{16E1C482-D8DE-4271-ABCA-B02478E5DB5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
