@@ -1,16 +1,16 @@
-﻿using AzureStorage.Patterns.Models;
-using Microsoft.Azure.Cosmos.Table;
+﻿using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace AzureStorage.Patterns
+namespace AzureStorage.Patterns.Common
 {
-    public static class DataAccess
+    public static class  DataAccess
     {
-        public static async Task Delete(CloudTable table, CustomerEntity customerEntity)
+        public static async Task Delete(CloudTable table, ITableEntity customerEntity)
         {
             TableOperation operation = TableOperation.Delete(customerEntity);
 
@@ -20,32 +20,48 @@ namespace AzureStorage.Patterns
 
         }
 
-        public static async Task<CustomerEntity> InsertOrMerge(CloudTable table, CustomerEntity customerEntity)
+        public static async Task<ITableEntity> InsertOrMerge(CloudTable table, ITableEntity customerEntity)
         {
             TableOperation operation = TableOperation.InsertOrMerge(customerEntity);
 
             TableResult result = await table.ExecuteAsync(operation);
 
-            CustomerEntity customer = result.Result as CustomerEntity;
-            if (customer != null)
-            {
-                Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", customer.PartitionKey, customer.RowKey, customer.Groups, customer.Interests);
-            }
+            ITableEntity customer = result.Result as ITableEntity;
+            //if (customer != null)
+            //{
+            //    Console.WriteLine("\t{0}", JsonSerializer.Deserialize<T>);
+            //}
 
             return customer;
         }
 
-        public static async Task<CustomerEntity> RetriveUsingRowAndPartitionKey(CloudTable table, string partitionKey, string rowKey)
+        public static async Task ExecuteBatchAsync(CloudTable table, IEnumerable<ITableEntity> customerEntities)
         {
-            TableOperation operation = TableOperation.Retrieve<CustomerEntity>(partitionKey, rowKey);
+            TableBatchOperation operation = new TableBatchOperation();
+
+            foreach (var item in customerEntities)
+            {
+                operation.InsertOrMerge(item); 
+            }
+
+            await table.ExecuteBatchAsync(operation);
+            //if (customer != null)
+            //{
+            //    Console.WriteLine("\t{0}", JsonSerializer.Deserialize<T>);
+            //}
+        }
+
+        public static async Task<ITableEntity> RetriveUsingRowAndPartitionKey(CloudTable table, string partitionKey, string rowKey)
+        {
+            TableOperation operation = TableOperation.Retrieve<ITableEntity>(partitionKey, rowKey);
 
             TableResult result = await table.ExecuteAsync(operation);
 
-            CustomerEntity customer = result.Result as CustomerEntity;
-            if (customer != null)
-            {
-                Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", customer.PartitionKey, customer.RowKey, customer.Groups, customer.Interests);
-            }
+            ITableEntity customer = result.Result as ITableEntity;
+            //if (customer != null)
+            //{
+            //    Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", customer.PartitionKey, customer.RowKey, customer.Groups, customer.Interests);
+            //}
 
             return customer;
         }

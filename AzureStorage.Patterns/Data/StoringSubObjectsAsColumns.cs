@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using static AzureStorage.Patterns.Data.DataAccess;
+using static AzureStorage.Patterns.Common.DataAccess;
 
 namespace AzureStorage.Patterns.Data
 {
@@ -15,8 +15,12 @@ namespace AzureStorage.Patterns.Data
         {
             var table = await CreateTable("Customers");
 
-            var result = await RetriveUsingRowAndPartitionKey(table, id, id.Substring(0));
+            var result = await RetriveUsingRowAndPartitionKey(table, id.Substring(0,1), id) as CustomerEntity;
 
+            if (result != null)
+            {
+                Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", result.PartitionKey, result.RowKey, result.Groups, result.Interests);
+            }
             var intrests = JsonSerializer.Deserialize<Interests>(result.Interests);
             var groups = JsonSerializer.Deserialize<Groups>(result.Groups);
 
@@ -43,7 +47,7 @@ namespace AzureStorage.Patterns.Data
             var table = await CreateTable("Customers");
 
             var addedRecord = await InsertOrMerge(table, customerEntity);
-            return MapViewModel(addedRecord);
+            return MapViewModel(addedRecord as CustomerEntity);
         }
 
         public async Task<Customer> UpdateCustomer(Customer cust)
@@ -57,15 +61,20 @@ namespace AzureStorage.Patterns.Data
 
             var table = await CreateTable("Customers");
 
-            var addedRecord = await InsertOrMerge(table, customerEntity);
-            return MapViewModel(addedRecord);
+            var result = await InsertOrMerge(table, customerEntity) as CustomerEntity;
+            
+            if (result != null)
+            {
+                Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", result.PartitionKey, result.RowKey, result.Groups, result.Interests);
+            }
+            return MapViewModel(result);
         }
 
         public async Task DeleteCustomer(string id)
         {
            
             var table = await CreateTable("Customers");
-            var result = await RetriveUsingRowAndPartitionKey(table, id, id.Substring(0));
+            var result = await RetriveUsingRowAndPartitionKey(table, id.Substring(0,1), id);
 
             await Delete(table, result);
         }

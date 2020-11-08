@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureStorage.Patterns.One", "AzureStorage.Patterns\AzureStorage.Patterns.One.csproj", "{16E1C482-D8DE-4271-ABCA-B02478E5DB5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureStorage.Patterns.Denormalization", "AzureStorage.Patterns\AzureStorage.Patterns.Denormalization.csproj", "{16E1C482-D8DE-4271-ABCA-B02478E5DB5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorage.Patterns.IntraPartition", "AzureStorage.Patterns.IntraPartition\AzureStorage.Patterns.IntraPartition.csproj", "{C7B66EF2-4FA2-4D49-9E19-5133E1C96B4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorage.Patterns.Common", "AzureStorage.Patterns.Common\AzureStorage.Patterns.Common.csproj", "{94780C43-3670-420D-BA69-8F5511A1D205}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{16E1C482-D8DE-4271-ABCA-B02478E5DB5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16E1C482-D8DE-4271-ABCA-B02478E5DB5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16E1C482-D8DE-4271-ABCA-B02478E5DB5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7B66EF2-4FA2-4D49-9E19-5133E1C96B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7B66EF2-4FA2-4D49-9E19-5133E1C96B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7B66EF2-4FA2-4D49-9E19-5133E1C96B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7B66EF2-4FA2-4D49-9E19-5133E1C96B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94780C43-3670-420D-BA69-8F5511A1D205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94780C43-3670-420D-BA69-8F5511A1D205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94780C43-3670-420D-BA69-8F5511A1D205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94780C43-3670-420D-BA69-8F5511A1D205}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

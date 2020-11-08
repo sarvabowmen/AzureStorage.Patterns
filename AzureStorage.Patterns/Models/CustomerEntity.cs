@@ -4,9 +4,14 @@ namespace AzureStorage.Patterns.Models
 {
     public class CustomerEntity: TableEntity
     {
+
+        public CustomerEntity()
+        {
+
+        }
         public CustomerEntity(string id)
         {
-            PartitionKey = id.Substring(0);
+            PartitionKey = id.Substring(0, 1);
             RowKey = id;
         }
 
