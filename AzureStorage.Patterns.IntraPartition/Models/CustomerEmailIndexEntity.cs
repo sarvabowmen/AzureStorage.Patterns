@@ -5,13 +5,13 @@ using System.Text;
 
 namespace AzureStorage.Patterns.IntraPartition.Models
 {
-    public class CustomerEntity : TableEntity
+    public class CustomerEmailIndexEntity : TableEntity
     {
-        public CustomerEntity()
+        public CustomerEmailIndexEntity()
         {
 
         }
-        public CustomerEntity(string type, string id)
+        public CustomerEmailIndexEntity(string type, string id)
         {
             PartitionKey = type;
             RowKey = id;
@@ -19,7 +19,7 @@ namespace AzureStorage.Patterns.IntraPartition.Models
 
         public string Id { get; set; }
         public string Name { get; set; }
-        public int Age { get; set; }
+
         public string Email { get; set; }
         public string Type { get; set; }
     }

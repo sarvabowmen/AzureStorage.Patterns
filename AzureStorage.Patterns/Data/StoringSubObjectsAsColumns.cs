@@ -15,7 +15,7 @@ namespace AzureStorage.Patterns.Data
         {
             var table = await CreateTable("Customers");
 
-            var result = await RetriveUsingRowAndPartitionKey(table, id.Substring(0,1), id) as CustomerEntity;
+            var result = await RetriveUsingRowAndPartitionKey<CustomerEntity>(table, id.Substring(0,1), id);
 
             if (result != null)
             {
@@ -74,7 +74,7 @@ namespace AzureStorage.Patterns.Data
         {
            
             var table = await CreateTable("Customers");
-            var result = await RetriveUsingRowAndPartitionKey(table, id.Substring(0,1), id);
+            var result = await RetriveUsingRowAndPartitionKey<CustomerEntity>(table, id.Substring(0,1), id);
 
             await Delete(table, result);
         }

@@ -44,6 +44,22 @@ namespace AzureStorage.Patterns.Common
                 operation.InsertOrMerge(item); 
             }
 
+           var s =  await table.ExecuteBatchAsync(operation);
+            //if (customer != null)
+            //{
+            //    Console.WriteLine("\t{0}", JsonSerializer.Deserialize<T>);
+            //}
+        }
+
+        public static async Task ExecuteBatchDeleteAsync(CloudTable table, IEnumerable<ITableEntity> customerEntities)
+        {
+            TableBatchOperation operation = new TableBatchOperation();
+
+            foreach (var item in customerEntities)
+            {
+                operation.Delete(item);
+            }
+
             await table.ExecuteBatchAsync(operation);
             //if (customer != null)
             //{
@@ -51,13 +67,13 @@ namespace AzureStorage.Patterns.Common
             //}
         }
 
-        public static async Task<ITableEntity> RetriveUsingRowAndPartitionKey(CloudTable table, string partitionKey, string rowKey)
+        public static async Task<T> RetriveUsingRowAndPartitionKey<T>(CloudTable table, string partitionKey, string rowKey) where T : TableEntity, new()
         {
-            TableOperation operation = TableOperation.Retrieve<ITableEntity>(partitionKey, rowKey);
+            TableOperation operation = TableOperation.Retrieve<T>(partitionKey, rowKey);
 
             TableResult result = await table.ExecuteAsync(operation);
 
-            ITableEntity customer = result.Result as ITableEntity;
+            T customer = result.Result as T;
             //if (customer != null)
             //{
             //    Console.WriteLine("\t{0}\t{1}\t{2}\t{3}", customer.PartitionKey, customer.RowKey, customer.Groups, customer.Interests);
