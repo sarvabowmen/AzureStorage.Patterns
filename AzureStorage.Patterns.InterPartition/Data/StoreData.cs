@@ -1,7 +1,9 @@
-﻿using AzureStorage.Patterns.InterPartition.Models;
+﻿using AzureStorage.Patterns.Common;
+using AzureStorage.Patterns.InterPartition.Models;
 using Microsoft.Azure.Cosmos.Table;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static AzureStorage.Patterns.Common.DataAccess;
 
@@ -74,16 +76,7 @@ namespace AzureStorage.Patterns.InterPartition.Data
 
         public async Task<CustomerDetails> UpdateCustomer(CustomerDetails cust)
         {
-            var customerEntity1 = new CustomerEntity(EmailIdIndexPrefix + cust.Type, cust.Id)
-            {
-                    Id = cust.Id,
-                    Name = cust.Name,
-                    Email = cust.Email,
-                    Age = cust.Age,
-                    Type = cust.Type
-            };
-
-            var customerEntity2 = new CustomerEntity(UserIdIndexPrefix + cust.Type, cust.Id)
+            var customerEntityUserIdIndex = new CustomerEntity(UserIdIndexPrefix + cust.Type, cust.Id)
             {
                 Id = cust.Id,
                 Name = cust.Name,
@@ -92,11 +85,26 @@ namespace AzureStorage.Patterns.InterPartition.Data
                 Type = cust.Type
             };
 
+            var customerEntityEmail = new CustomerEntity(EmailIdIndexPrefix + cust.Type, cust.Id)
+            {
+                    Id = cust.Id,
+                    Name = cust.Name,
+                    Email = cust.Email,
+                    Age = cust.Age,
+                    Type = cust.Type
+            };
+
+          
 
             var table = await CreateTable("CustomersInterPartition");
 
-            await InsertOrMerge(table, customerEntity1);
-            await InsertOrMerge(table, customerEntity2);
+            await InsertOrMerge(table, customerEntityUserIdIndex);
+
+            EventualConsistentQueue queue = new EventualConsistentQueue();
+            var serializedCustomerEntity = JsonSerializer.Serialize(customerEntityEmail);
+            await queue.AddMessageAsync("interpartition-queue", cust.Id + ":" + cust.Type);
+
+            //await InsertOrMerge(table, customerEntity2);
             if (cust != null)
             {
                 Console.WriteLine("\t{0}\t{1}\t{2}\t{3}\t{4}", cust.Id, cust.Name, cust.Age, cust.Email, cust.Type);
@@ -111,7 +119,8 @@ namespace AzureStorage.Patterns.InterPartition.Data
             var resultForEmail = await RetriveUsingRowAndPartitionKey<CustomerEntity>(table, EmailIdIndexPrefix + type, email);
             var resultForId = await RetriveUsingRowAndPartitionKey<CustomerEntity>(table, UserIdIndexPrefix + type, resultForEmail.Id);
 
-            await ExecuteBatchDeleteAsync(table, new[] { resultForEmail, resultForId });
+            await Delete(table, resultForEmail);
+            await Delete(table, resultForId);
         }
 
 

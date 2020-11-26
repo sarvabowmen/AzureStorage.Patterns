@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureStorage.Patterns.Commo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureStorage.Patterns.InterPartition", "AzureStorage.Patterns.InterPartition\AzureStorage.Patterns.InterPartition.csproj", "{C328BE67-C007-4300-B733-EEA0672444DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorage.Worker", "AzureStorage.Worker\AzureStorage.Worker.csproj", "{A27DE6B5-8440-45AE-AD13-F1C965D1F121}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStoragePatterns.Worker", "AzureStoragePatterns.Worker\AzureStoragePatterns.Worker.csproj", "{AE4BF3C3-94D8-47D5-9586-FCAE29D6D3C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{C328BE67-C007-4300-B733-EEA0672444DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C328BE67-C007-4300-B733-EEA0672444DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C328BE67-C007-4300-B733-EEA0672444DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A27DE6B5-8440-45AE-AD13-F1C965D1F121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A27DE6B5-8440-45AE-AD13-F1C965D1F121}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A27DE6B5-8440-45AE-AD13-F1C965D1F121}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A27DE6B5-8440-45AE-AD13-F1C965D1F121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE4BF3C3-94D8-47D5-9586-FCAE29D6D3C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE4BF3C3-94D8-47D5-9586-FCAE29D6D3C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE4BF3C3-94D8-47D5-9586-FCAE29D6D3C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE4BF3C3-94D8-47D5-9586-FCAE29D6D3C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

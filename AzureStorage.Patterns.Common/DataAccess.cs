@@ -2,14 +2,14 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AzureStorage.Patterns.Common
 {
-    public static class  DataAccess
+    public static class DataAccess
     {
+        public const string EmailIdIndexPrefix = "email_";
+        public const string UserIdIndexPrefix = "id_";
         public static async Task Delete(CloudTable table, ITableEntity customerEntity)
         {
             TableOperation operation = TableOperation.Delete(customerEntity);
@@ -82,7 +82,7 @@ namespace AzureStorage.Patterns.Common
             return customer;
         }
 
-        private static CloudStorageAccount CreateTableStorage(string connectionString)
+        internal static CloudStorageAccount CreateTableStorage(string connectionString)
         {
             CloudStorageAccount cloudStorage;
             cloudStorage = CloudStorageAccount.Parse(connectionString);
